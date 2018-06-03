@@ -1,0 +1,197 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" viewport-fit="cover">
+  <style>
+    * { box-sizing: border-box }
+    html, body {
+      font-family: 'Roboto', sans-serif;
+      font-size: 16px;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background: white;
+      color: #333;
+    }
+    .header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      text-align: center;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.9);
+      box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+    }
+    footer {
+      text-align: center;
+    }
+    .header ul, footer ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      height: 4rem;
+    }
+    .header ul li, footer ul li {
+      display: flex;
+      flex: auto;
+      flex-direction: column;
+      justify-content: center;
+    }
+    a {
+      word-wrap: break-word;
+      color: #1d77c0;
+    }
+    .logo {
+      width: 128px;
+    }
+    .lead {
+      font-size: 2rem;
+      line-height: 1.4;
+      font-weight: 300;
+    }
+    section {
+      min-height: 100vh;
+      text-align: center;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+      padding-right: 4rem;
+      padding-left: 4rem;
+    }
+    section .content {
+      margin: 0 auto;
+      max-width: 1000px;
+    }
+    code {
+      display: inline-block;
+      border-radius: 4px;
+      padding: 0 2rem;
+      text-align: left;
+      background-color: #183c58;
+      color: white;
+      overflow: auto;
+      max-width: 100%;
+    }
+    h1 {
+      font-size: 4rem;
+    }
+    h3 {
+      font-size: 3rem;
+    }
+    h4 {
+      font-size: 2rem;
+    }
+    strong {
+      font-weight: 700;
+    }
+    .bg1 {
+      background-color: #f7f7f7;
+    }
+    .bg2 {
+      background: white;
+    }
+    .mt-2 {
+      margin-top: 2rem;
+    }
+    .text-left {
+      text-align: left;
+    }
+    @media (max-width: 480px) {
+      section {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        padding-right: 1rem;
+        padding-left: 1rem;
+      }
+    }
+    p {
+      line-height: 1.4;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
+</head>
+<body>
+  <div class="header">
+    <ul>
+      <li><a href="#Home">Home</a></li>
+      <li><a href="#Recipes">Recipes</a></li>
+      <li><a href="#Examples">Examples</a></li>
+      <li><a href="https://www.github.com/joaoneto/webpack-recipes" target="_blank">Github</a></li>
+    </ul>
+  </div>
+  <div class="container">
+    <section id="Home">
+      <div class="content">
+        <h1 class="mt-2">Webpack Recipes</h1>
+        <img class="logo" src="assets/img/logo_v2.svg">
+        <p class="lead">Modular and pluggable command line for compiling and running webpack builds.</p>
+        <p>The <em>webpack-recipes</em> only creates a structure to assist in creating a build with a webpack configuration, making the setup of your project almost zero. Gaining agility with fewer settings at the time you start coding, test, create a folder, and start a project with a single command:</p>
+        <code class="mt-2"><pre>curl -L https://git.io/vhWby | bash</pre></code>
+      </div>
+    </section>
+    <section id="Recipes" class="bg1">
+      <div class="content">
+        <h3>Recipes</h3>
+        <p>Recipes are modules that configure a specific part of the webpack build, which can be combined with other recipes.</p>
+        <h4>Structure</h4>
+        <div class="text-left">
+          <p>The Recipe should have 2 exports (<em>recipe</em> and <em>webpackConfig</em>)</p>
+          <strong>module.exports.recipe</strong>
+          <ul>
+            <li><strong>name</strong>: Recipe name</li>
+            <li><strong>version</strong>: Recipe version</li>
+            <li><strong>description</strong>: Recipe description</li>
+            <li><strong>command</strong>: command line definitions (learn more at <a href="https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module" target="_blank">https://github.com/yargs/yargs/blob/master/docs/advanced.md#providing-a-command-module</a>)</li>
+          </ul>
+        </div>
+        <code class="mt-2">
+<pre>module.exports.recipe = {
+  name: 'devserver',
+  version: '0.0.1',
+  description: 'Webpack Dev Server',
+  command
+};</pre>
+        </code>
+        <div class="mt-2 text-left">
+          <strong>module.exports.webpackConfig</strong>
+          <p>The webpackConfig method must be exported as a function that recives <em>argv</em> command line parameters and returning a webpack configuration object. (learn more at <a href="https://webpack.js.org/configuration/" target="_blank"> https://webpack.js.org/configuration/</a>)</p>
+        </div>
+        <code class="mt-2">
+<pre>module.exports.webpackConfig = function (argv) {
+  return {
+    mode: 'development',
+
+    devServer: {
+      historyApiFallback: true,
+      stats: 'minimal',
+      port: argv.port,
+      inline: argv.inline,
+      contentBase: argv['content-base'],
+      watchOptions: { aggregateTimeout: 300, poll: 1000 },
+    },
+  }
+};</pre>
+        </code>
+      </div>
+    </section>
+    <section id="Examples">
+      <div class="content">
+        <h3>Examples</h3>
+        <p>Simple recipe example <em>(app)</em>: <a href="https://github.com/joaoneto/webpack-recipes-example" target="_blank">https://github.com/joaoneto/webpack-recipes-example</a></p>
+        <p>DevServer recipe <em>(plugin)</em>: <a href="https://github.com/joaoneto/webpack-recipes-devserver" target="_blank">https://github.com/joaoneto/webpack-recipes-devserver</a></p>
+        <p>ES6 minimum build recipe <em>(plugin)</em>: <a href="https://github.com/joaoneto/webpack-recipes-es6" target="_blank">https://github.com/joaoneto/webpack-recipes-es6</a></p>
+      </div>
+    </section>
+    <footer>
+      <ul>
+        <li><a href="https://webpack.js.org" target="_blank">Webpack</a></li>
+        <li><a href="https://www.github.com/joaoneto/webpack-recipes" target="_blank">Github</a></li>
+      </ul>
+    </footer>
+  </div>
+</body>
+</html>
